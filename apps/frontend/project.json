@@ -1,31 +1,26 @@
 {
-  "name": "angularek",
-  "$schema": "node_modules/nx/schemas/project-schema.json",
-  "includedScripts": [],
+  "name": "frontend",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "prefix": "app",
-  "sourceRoot": "./src",
+  "sourceRoot": "apps/frontend/src",
   "tags": [],
   "targets": {
     "build": {
       "executor": "@angular/build:application",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/angularek",
-        "browser": "./src/main.ts",
-        "tsConfig": "tsconfig.app.json",
+        "outputPath": "dist/apps/frontend",
+        "browser": "apps/frontend/src/main.ts",
+        "tsConfig": "apps/frontend/tsconfig.app.json",
         "assets": [
           {
             "glob": "**/*",
-            "input": "public"
+            "input": "apps/frontend/public"
           }
         ],
-        "styles": [
-          "./src/styles.css"
-        ]
+        "styles": ["apps/frontend/src/styles.css"]
       },
       "configurations": {
         "production": {
@@ -56,28 +51,29 @@
       "defaultConfiguration": "development",
       "configurations": {
         "production": {
-          "buildTarget": "angularek:build:production"
+          "buildTarget": "frontend:build:production"
         },
         "development": {
-          "buildTarget": "angularek:build:development"
+          "buildTarget": "frontend:build:development"
         }
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@angular/build:unit-test",
       "options": {
-        "lintFilePatterns": [
-          "./src"
-        ]
+        "watch": false
       }
     },
     "serve-static": {
       "continuous": true,
       "executor": "@nx/web:file-server",
       "options": {
-        "buildTarget": "angularek:build",
+        "buildTarget": "frontend:build",
         "port": 4200,
-        "staticFilePath": "dist/angularek/browser",
+        "staticFilePath": "dist/apps/frontend/browser",
         "spa": true
       }
     }
