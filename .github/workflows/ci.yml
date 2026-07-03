@@ -1,0 +1,39 @@
+name: CI
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Instalacja Node.js
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      # Konfiguracja pamięci podręcznej (Cache) dla Nx zamiast Nx Cloud
+      - name: Cache Nx Task Results
+        uses: actions/cache@v4
+        with:
+          path: .nx/cache
+          key: ${{ runner.os }}-nx-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-nx-
+
+      # Instalacja paczek
+      - run: npm ci
+
+      # Instalacja przeglądarek dla Playwright (wymagane do testów E2E)
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      # Uruchomienie testów, sprawdzania kodu i budowania aplikacji
+      # Nx automatycznie sprawdzi tylko zmienione pliki dzięki flagi --base
+      - run: npx nx affected -t lint test build e2e --base=origin/main
