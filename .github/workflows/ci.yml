@@ -28,7 +28,7 @@ jobs:
             ${{ runner.os }}-nx-
 
       # Instalacja paczek
-      - run: npm ci
+      - run: npm install
 
       # Instalacja przeglądarek dla Playwright (wymagane do testów E2E)
       - name: Install Playwright Browsers
