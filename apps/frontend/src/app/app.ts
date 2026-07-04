@@ -13,6 +13,13 @@ const STEPS: StepDef[] = [
   { id: 2, label: 'Przestrzeń rozwiązań' },
 ];
 
+const DEFAULT_PROBLEM_PROMPT = `People keep buying a new phone, laptop, or gadget every year, and the old ones pile up as
+e-waste — most of it never safely recovered, a lot of it shipped away, buried, or scrapped in
+ways that leak toxic materials and waste the rare earths, copper, and gold inside. I'm not going
+to stop upgrading. Don't just optimize recycling — reinvent the whole lifecycle of a consumer
+device from multiple creative angles: who owns it, how it's sold, what happens when I want the
+next one, and how the materials find their way back. Give me concrete, actionable ideas.`;
+
 @Component({
   imports: [
     CommonModule, 
@@ -30,13 +37,14 @@ const STEPS: StepDef[] = [
 export class App {
   readonly STEPS = STEPS;
   readonly MOCK_SOLUTIONS = MOCK_SOLUTIONS;
+  readonly DEFAULT_PROBLEM_PROMPT = DEFAULT_PROBLEM_PROMPT;
 
   step = 1;
   furthestUnlocked = 1;
   selectedId: string | null = null;
 
   formulation: FormulationState = {
-    problem: '',
+    problem: DEFAULT_PROBLEM_PROMPT,
     improve: null,
     worsen: null,
     criteria: JSON.parse(JSON.stringify(DEFAULT_CRITERIA)),
@@ -124,7 +132,7 @@ export class App {
     this.selectedId = null;
     this.scores = {};
     this.formulation = {
-      problem: '',
+      problem: DEFAULT_PROBLEM_PROMPT,
       improve: null,
       worsen: null,
       criteria: JSON.parse(JSON.stringify(DEFAULT_CRITERIA)),

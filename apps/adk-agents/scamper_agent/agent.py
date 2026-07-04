@@ -31,6 +31,21 @@ connection_params = StreamableHTTPConnectionParams(
     use_mtls=False,
 )
 
+WORKSPACE_CONTEXT_INSTRUCTION = """
+
+Workspace context rules:
+- Always use the provided workspace/IDE context as the source of truth when it is present.
+- Treat the current working directory, active file, open tabs, selected text, diagnostics,
+  terminal output, git status, and detected project files as runtime context for the request.
+- If the user says "this file", "the app", "the project", "here", "now", or similar, resolve
+  that using the active file and current working directory from the provided context.
+- Do not assume you can see the IDE directly. Only rely on context explicitly provided in the
+  conversation and on files/tools available to you.
+- When suggesting commands, base them on the current working directory and project scripts.
+- When changing or explaining code, inspect the relevant files, preserve existing style, and do
+  not overwrite unrelated user changes.
+"""
+
 # Initialize the root agent which will be used by ADK CLI and API server
 root_agent = Agent(
     model="gemini-2.5-flash",
@@ -51,6 +66,7 @@ root_agent = Agent(
         "to the user's technical stack and problem description.\n"
         "5. Provide a beautifully formatted output structured with: Problem, SCAMPER Categories Explored, "
         "and Actionable Ideas (grouped by category)."
+        + WORKSPACE_CONTEXT_INSTRUCTION
     ),
     tools=[
         McpToolset(connection_params=connection_params)

@@ -40,6 +40,10 @@
   border-color: #030213;
 }
 
+.problem-textarea--default {
+  color: #8c8c99;
+}
+
 .problem-textarea::placeholder {
   color: #c3c3ca;
 }

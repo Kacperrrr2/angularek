@@ -29,6 +29,7 @@
         @if (step === 1) {
           <app-problem-formulation
             [state]="formulation"
+            [defaultProblemPrompt]="DEFAULT_PROBLEM_PROMPT"
             (stateChange)="onFormulationChange($event)"
           ></app-problem-formulation>
         }

@@ -26,7 +26,7 @@ export interface FormulationState {
         <textarea
           [ngModel]="state.problem"
           (ngModelChange)="onProblemChange($event)"
-          placeholder="np. Chcemy zmniejszyć masę ramienia robota, ale zachować jego sztywność przy obciążeniu…"
+          [ngClass]="{ 'problem-textarea--default': state.problem === defaultProblemPrompt }"
           rows="5"
           class="problem-textarea"
         ></textarea>
@@ -101,6 +101,7 @@ export interface FormulationState {
 })
 export class ProblemFormulationComponent {
   @Input() state!: FormulationState;
+  @Input() defaultProblemPrompt = '';
   @Output() stateChange = new EventEmitter<Partial<FormulationState>>();
 
   get totalWeight(): number {
