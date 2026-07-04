@@ -1,2 +1,94 @@
-<app-nx-welcome></app-nx-welcome>
-<router-outlet></router-outlet>
+<div class="app-container">
+  <header class="app-header">
+    <div class="app-logo-group">
+      <div class="app-logo">
+        <span class="app-logo-text">T</span>
+      </div>
+      <span class="app-title">TRIZ R&D Platform</span>
+    </div>
+    <app-nav-tabs-rd
+      [steps]="STEPS"
+      [current]="step"
+      [furthestUnlocked]="furthestUnlocked"
+      (onSelect)="setStep($event)"
+    ></app-nav-tabs-rd>
+    <div class="app-header-spacer"></div>
+  </header>
+
+  <main class="app-main" [ngClass]="step === 2 ? 'app-main--bg-gray' : 'app-main--bg-white'">
+    <div class="app-content">
+      <app-solution-evaluation-card
+        *ngIf="selectedSolution"
+        [solution]="selectedSolution"
+        [score]="scores[selectedSolution.id] ?? 0"
+        (onReset)="reset()"
+      ></app-solution-evaluation-card>
+
+      <ng-container *ngIf="!selectedSolution">
+        <app-problem-formulation
+          *ngIf="step === 1"
+          [state]="formulation"
+          (stateChange)="onFormulationChange($event)"
+        ></app-problem-formulation>
+
+        <div *ngIf="step === 2" class="app-step2-wrapper">
+          <div>
+            <h2 class="app-step2-title">Przestrzeń rozwiązań</h2>
+            <p class="app-step2-subtitle">
+              Sprzeczność
+              <span class="app-highlight-improve">{{ formulation.improve?.id }}</span>
+              ↑ /
+              <span class="app-highlight-worsen">{{ formulation.worsen?.id }}</span>
+              ↓ · {{ MOCK_SOLUTIONS.length }} wygenerowanych koncepcji. Oceń
+              każdą, aby wybrać najlepszą.
+            </p>
+          </div>
+          <app-morphological-matrix-table
+            [scores]="scores"
+            (scoreChange)="onScoreChange($event)"
+          ></app-morphological-matrix-table>
+        </div>
+      </ng-container>
+    </div>
+  </main>
+
+  <footer *ngIf="!selectedSolution" class="app-footer">
+    <div>
+      <button *ngIf="step === 2" (click)="setStep(1)" class="app-btn-back">
+        <svg lucideArrowLeft class="app-icon"></svg>
+        Wróć do formulacji
+      </button>
+    </div>
+
+    <div class="app-footer-right">
+      <span class="app-status-text">
+        <ng-container *ngIf="step === 1">
+          {{ step1Valid ? 'Problem sformułowany' : 'Uzupełnij wymagane pola' }}
+        </ng-container>
+        <ng-container *ngIf="step !== 1">
+          {{ scoredCount }}/{{ MOCK_SOLUTIONS.length }} ocenionych
+        </ng-container>
+      </span>
+
+      <button
+        *ngIf="step === 1"
+        (click)="goToStep2()"
+        [disabled]="!step1Valid"
+        class="app-btn-primary"
+      >
+        Wyświetl rozwiązania
+        <svg lucideArrowRight class="app-icon"></svg>
+      </button>
+
+      <button
+        *ngIf="step !== 1"
+        (click)="selectBest()"
+        [disabled]="!step2Valid"
+        class="app-btn-primary"
+      >
+        Wybierz najlepsze rozwiązanie
+        <svg lucideArrowRight class="app-icon"></svg>
+      </button>
+    </div>
+  </footer>
+</div>
