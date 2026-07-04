@@ -52,6 +52,10 @@ services:
       SCAMPER_MCP_SERVER_URL: 'http://scamper-mcp-server:8124/mcp'
       GOOGLE_API_KEY: '${GOOGLE_API_KEY}'
       PORT: '8081'
+      # TEMPORARY local-dev-only workaround: skips TLS verification on calls to Gemini.
+      # Needed while Avast Web Shield injects a malformed root cert on this machine.
+      # Remove once the Avast exclusion for Docker is in place.
+      ADK_INSECURE_SKIP_TLS_VERIFY: '1'
     ports:
       - '8081:8081'
     depends_on:

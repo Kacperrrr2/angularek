@@ -1,4 +1,23 @@
 import os
+
+# TEMPORARY local-dev-only escape hatch: skips TLS certificate verification on
+# outbound calls (e.g. to Gemini) when an intercepting proxy/antivirus (e.g. Avast
+# Web Shield) injects a malformed root certificate that a correct client must
+# reject. Patches ssl.create_default_context itself so it applies regardless of
+# which library/layer requests a context. Never enable this outside local dev.
+if os.environ.get("ADK_INSECURE_SKIP_TLS_VERIFY") == "1":
+    import ssl
+
+    _orig_create_default_context = ssl.create_default_context
+
+    def _insecure_create_default_context(*args, **kwargs):
+        ctx = _orig_create_default_context(*args, **kwargs)
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        return ctx
+
+    ssl.create_default_context = _insecure_create_default_context
+
 from google.adk import Agent
 from google.adk.tools.mcp_tool import McpToolset
 from google.adk.tools.mcp_tool.mcp_session_manager import StreamableHTTPConnectionParams
