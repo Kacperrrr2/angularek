@@ -16,5 +16,74 @@ services:
       timeout: 5s
       retries: 10
 
+  triz-mcp-server:
+    build:
+      context: .
+      dockerfile: apps/triz-mcp-server/Dockerfile
+    restart: unless-stopped
+    environment:
+      MCP_HOST: '0.0.0.0'
+      MCP_PORT: '8123'
+      EMBEDDING_MODEL: 'embeddinggemma:300m'
+      EMBEDDING_SERVICE_URL: 'http://host.docker.internal:11434/v1'
+    ports:
+      - '8123:8123'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+
+  scamper-mcp-server:
+    build:
+      context: .
+      dockerfile: apps/scamper-mcp-server/Dockerfile
+    restart: unless-stopped
+    environment:
+      MCP_HOST: '0.0.0.0'
+      MCP_PORT: '8124'
+    ports:
+      - '8124:8124'
+
+  adk-agent:
+    build:
+      context: .
+      dockerfile: apps/adk-agents/Dockerfile
+    restart: unless-stopped
+    environment:
+      MCP_SERVER_URL: 'http://triz-mcp-server:8123/mcp'
+      SCAMPER_MCP_SERVER_URL: 'http://scamper-mcp-server:8124/mcp'
+      GOOGLE_API_KEY: '${GOOGLE_API_KEY}'
+      PORT: '8081'
+    ports:
+      - '8081:8081'
+    depends_on:
+      - triz-mcp-server
+      - scamper-mcp-server
+
+  backend:
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: 'postgresql://johndoe:randompassword@postgres:5432/mydb?schema=public'
+      ADK_AGENT_URL: 'http://adk-agent:8081'
+      PORT: '3000'
+    ports:
+      - '3000:3000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      adk-agent:
+        condition: service_started
+
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/frontend/Dockerfile
+    restart: unless-stopped
+    ports:
+      - '4200:4200'
+    depends_on:
+      - backend
+
 volumes:
   postgres-data:

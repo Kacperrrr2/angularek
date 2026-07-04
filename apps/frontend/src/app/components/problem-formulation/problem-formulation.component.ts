@@ -31,7 +31,7 @@ export interface FormulationState {
           class="problem-textarea"
         ></textarea>
       </section>
-    
+
       <section>
         <h3 class="section-title">Parametry sprzeczności</h3>
         <p class="section-desc">

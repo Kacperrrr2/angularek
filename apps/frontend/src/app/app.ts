@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavTabsRdComponent, StepDef } from './components/nav-tabs-rd/nav-tabs-rd.component';
 import { ProblemFormulationComponent, FormulationState } from './components/problem-formulation/problem-formulation.component';
 import { MorphologicalMatrixTableComponent } from './components/morphological-matrix-table/morphological-matrix-table.component';
 import { SolutionEvaluationCardComponent } from './components/solution-evaluation-card/solution-evaluation-card.component';
 import { DEFAULT_CRITERIA, MOCK_SOLUTIONS, Solution } from './data/triz';
+import { SolveResult, SolveService } from './services/solve.service';
 import { LucideArrowLeft, LucideArrowRight } from '@lucide/angular';
 
 const STEPS: StepDef[] = [
@@ -42,6 +43,12 @@ export class App {
   };
 
   scores: Record<string, number | null> = {};
+
+  solving = signal(false);
+  solveError = signal<string | null>(null);
+  solveResult = signal<SolveResult | null>(null);
+
+  private readonly solveService = inject(SolveService);
 
   get weightSum(): number {
     return this.formulation.criteria.reduce((s, c) => s + c.weight, 0);
@@ -86,6 +93,21 @@ export class App {
     if (!this.step1Valid) return;
     this.furthestUnlocked = Math.max(this.furthestUnlocked, 2);
     this.step = 2;
+
+    this.solving.set(true);
+    this.solveError.set(null);
+    this.solveResult.set(null);
+
+    this.solveService.solve(this.formulation.problem).subscribe({
+      next: (result) => {
+        this.solveResult.set(result);
+        this.solving.set(false);
+      },
+      error: () => {
+        this.solveError.set('Nie udało się wygenerować rozwiązań. Sprawdź, czy backend działa.');
+        this.solving.set(false);
+      },
+    });
   }
 
   selectBest() {
@@ -107,5 +129,8 @@ export class App {
       worsen: null,
       criteria: JSON.parse(JSON.stringify(DEFAULT_CRITERIA)),
     };
+    this.solving.set(false);
+    this.solveError.set(null);
+    this.solveResult.set(null);
   }
 }

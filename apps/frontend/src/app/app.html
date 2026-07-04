@@ -45,6 +45,34 @@
                 każdą, aby wybrać najlepszą.
               </p>
             </div>
+
+            @if (solving()) {
+              <p class="app-ai-status">Generowanie rozwiązań AI…</p>
+            }
+            @if (solveError()) {
+              <p class="app-ai-error">{{ solveError() }}</p>
+            }
+            @if (solveResult(); as result) {
+              <div class="app-ai-results">
+                <div class="app-ai-results-group">
+                  <h3 class="app-ai-results-title">TRIZ</h3>
+                  @for (r of result.triz; track $index) {
+                    <div class="app-ai-result-card">
+                      <pre class="app-ai-result-text">{{ r.response }}</pre>
+                    </div>
+                  }
+                </div>
+                <div class="app-ai-results-group">
+                  <h3 class="app-ai-results-title">SCAMPER</h3>
+                  @for (r of result.scamper; track $index) {
+                    <div class="app-ai-result-card">
+                      <pre class="app-ai-result-text">{{ r.response }}</pre>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+
             <app-morphological-matrix-table
               [scores]="scores"
               (scoreChange)="onScoreChange($event)"
