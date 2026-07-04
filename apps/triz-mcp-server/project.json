@@ -1,0 +1,31 @@
+{
+  "name": "triz-mcp-server",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/triz-mcp-server/app",
+  "targets": {
+    "serve": {
+      "continuous": true,
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "uv run python app/main.py",
+        "cwd": "apps/triz-mcp-server"
+      }
+    },
+    "docker-build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker build -t triz-mcp-server .",
+        "cwd": "apps/triz-mcp-server"
+      }
+    },
+    "deploy-local": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "./local_deploy.sh",
+        "cwd": "apps/triz-mcp-server"
+      }
+    }
+  },
+  "tags": ["type:mcp", "scope:triz"]
+}

@@ -1,0 +1,31 @@
+{
+  "name": "scamper-mcp-server",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/scamper-mcp-server/app",
+  "targets": {
+    "serve": {
+      "continuous": true,
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "uv run python app/main.py",
+        "cwd": "apps/scamper-mcp-server"
+      }
+    },
+    "docker-build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker build -t scamper-mcp-server .",
+        "cwd": "apps/scamper-mcp-server"
+      }
+    },
+    "deploy-local": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "./local_deploy.sh",
+        "cwd": "apps/scamper-mcp-server"
+      }
+    }
+  },
+  "tags": ["type:mcp", "scope:scamper"]
+}

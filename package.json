@@ -3,9 +3,12 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "nx run-many -t serve -p frontend backend",
+    "start": "nx run-many -t serve -p frontend backend triz-mcp-server scamper-mcp-server adk-agent --parallel=5",
     "start:frontend": "nx serve frontend",
     "start:backend": "nx serve backend",
+    "start:triz-mcp": "nx serve triz-mcp-server",
+    "start:scamper-mcp": "nx serve scamper-mcp-server",
+    "start:agent": "nx serve adk-agent",
     "build": "nx run-many -t build -p frontend backend",
     "test": "nx run-many -t test"
   },
