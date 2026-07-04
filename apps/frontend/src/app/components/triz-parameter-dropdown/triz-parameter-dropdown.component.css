@@ -1,0 +1,146 @@
+.dropdown-container {
+  position: relative;
+}
+
+.dropdown-header {
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dropdown-indicator {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+}
+
+.dropdown-label {
+  font-size: 0.875rem;
+  color: #717182;
+}
+
+.dropdown-button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-radius: 0.375rem;
+  border: 1px solid rgba(0,0,0,0.1);
+  background-color: white;
+  padding: 0.625rem 0.75rem;
+  text-align: left;
+  transition: border-color 0.15s ease-in-out;
+}
+
+.dropdown-button:hover {
+  border-color: rgba(0,0,0,0.2);
+}
+
+.dropdown-value {
+  min-width: 0;
+  flex: 1 1 0%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dropdown-value-selected {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  color: #030213;
+}
+
+.dropdown-value-placeholder {
+  font-size: 0.875rem;
+  color: #c3c3ca;
+}
+
+.dropdown-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  color: #717182;
+  transition: transform 0.15s ease-in-out;
+}
+
+.dropdown-icon--open {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  z-index: 20;
+  margin-top: 0.25rem;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0.375rem;
+  border: 1px solid rgba(0,0,0,0.1);
+  background-color: white;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+}
+
+.dropdown-search-wrapper {
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  padding: 0.5rem;
+}
+
+.dropdown-search-input {
+  width: 100%;
+  border: none;
+  border-radius: 0.25rem;
+  background-color: #f7f7f8;
+  padding: 0.375rem 0.625rem;
+  font-size: 0.875rem;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.dropdown-search-input::placeholder {
+  color: #c3c3ca;
+}
+
+.dropdown-list {
+  max-height: 16rem;
+  overflow-y: auto;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.dropdown-option {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  transition: background-color 0.15s ease-in-out;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown-option:hover {
+  background-color: #f7f7f8;
+}
+
+.dropdown-option-id {
+  width: 1.5rem;
+  flex-shrink: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.75rem;
+}
+
+.dropdown-option-name {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  color: #030213;
+}
+
+.dropdown-empty {
+  padding: 1.5rem 0.75rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #c3c3ca;
+}

@@ -1,0 +1,136 @@
+.formulation-container {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 42rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.section-title {
+  margin-bottom: 0.25rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #030213;
+}
+
+.section-desc {
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: #717182;
+}
+
+.problem-textarea {
+  width: 100%;
+  resize: none;
+  border-radius: 0.375rem;
+  border: 1px solid rgba(0,0,0,0.1);
+  background-color: white;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.625;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition: border-color 0.15s ease-in-out;
+}
+
+.problem-textarea:focus {
+  border-color: #030213;
+}
+
+.problem-textarea::placeholder {
+  color: #c3c3ca;
+}
+
+.params-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .params-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.criteria-header {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.criteria-sum {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+}
+
+.criteria-sum--valid {
+  color: #3ecf8e;
+}
+
+.criteria-sum--invalid {
+  color: #ff4d4d;
+}
+
+.criteria-list {
+  border-radius: 0.375rem;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.criteria-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.criteria-item:last-child {
+  border-bottom: none;
+}
+
+.criteria-label {
+  font-size: 0.875rem;
+  color: #030213;
+}
+
+.criteria-input-group {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.criteria-input {
+  width: 4rem;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(0,0,0,0.1);
+  background-color: white;
+  padding: 0.25rem 0.5rem;
+  text-align: right;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition: border-color 0.15s ease-in-out;
+}
+
+.criteria-input:focus {
+  border-color: #030213;
+}
+
+.criteria-percent {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  color: #717182;
+}
+
+.criteria-error {
+  margin-top: 0.5rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.75rem;
+  color: #ff4d4d;
+}
