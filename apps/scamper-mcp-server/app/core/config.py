@@ -17,14 +17,7 @@ class Config(BaseSettings):
     # MCP Server
     # ==========================================
     MCP_HOST: str = "localhost"
-    MCP_PORT: int = 8123
-
-    # ==========================================
-    # Embeddings (semantic search in pytriz)
-    # ==========================================
-    EMBEDDING_MODEL: str = "embeddinggemma:300m"
-    EMBEDDING_SERVICE_URL: str = "http://localhost:11434/v1"
-    EMBEDDING_API_KEY: str = "ollama"
+    MCP_PORT: int = 8124
 
 
 config = Config()
