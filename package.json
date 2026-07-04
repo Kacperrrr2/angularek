@@ -7,7 +7,10 @@
     "start:frontend": "nx serve frontend",
     "start:backend": "nx serve backend",
     "build": "nx run-many -t build -p frontend backend",
-    "test": "nx run-many -t test"
+    "test": "nx run-many -t test",
+    "lint": "nx run-many -t lint -p frontend backend",
+    "lint:frontend": "nx run frontend:lint",
+    "lint:backend": "nx run backend:lint"
   },
   "private": true,
   "dependencies": {

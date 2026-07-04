@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, Output, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LucideChevronDown } from '@lucide/angular';
@@ -13,52 +13,62 @@ import { TRIZ_PARAMETERS, TrizParameter } from '../../data/triz';
     <div class="dropdown-container">
       <div class="dropdown-header">
         <span class="dropdown-indicator" [style.backgroundColor]="accent"></span>
-        <label class="dropdown-label">{{ label }}</label>
+        <span class="dropdown-label">{{ label }}</span>
       </div>
-
+    
       <button
         (click)="toggleOpen()"
         class="dropdown-button"
-      >
+        >
         <span class="dropdown-value">
-          <span *ngIf="value" class="dropdown-value-selected">
-            <span [style.color]="accent">{{ value.id }}</span>
-            &nbsp;&nbsp;{{ value.name }}
-          </span>
-          <span *ngIf="!value" class="dropdown-value-placeholder">Wybierz parametr…</span>
+          @if (value) {
+            <span class="dropdown-value-selected">
+              <span [style.color]="accent">{{ value.id }}</span>
+              &nbsp;&nbsp;{{ value.name }}
+            </span>
+          }
+          @if (!value) {
+            <span class="dropdown-value-placeholder">Wybierz parametr…</span>
+          }
         </span>
         <svg lucideChevronDown class="dropdown-icon" [ngClass]="{ 'dropdown-icon--open': open }"></svg>
       </button>
-
-      <div *ngIf="open" class="dropdown-menu">
-        <div class="dropdown-search-wrapper">
-          <input
-            #searchInput
-            [ngModel]="query"
-            (ngModelChange)="onQueryChange($event)"
-            placeholder="Filtruj z macierzy 39×39…"
-            class="dropdown-search-input"
-          />
+    
+      @if (open) {
+        <div class="dropdown-menu">
+          <div class="dropdown-search-wrapper">
+            <input
+              #searchInput
+              [ngModel]="query"
+              (ngModelChange)="onQueryChange($event)"
+              placeholder="Filtruj z macierzy 39×39…"
+              class="dropdown-search-input"
+              />
+          </div>
+          <ul class="dropdown-list">
+            @for (p of filteredOptions; track p) {
+              <li>
+                <button
+                  (click)="selectOption(p)"
+                  class="dropdown-option"
+                  >
+                  <span class="dropdown-option-id" [style.color]="accent">{{ p.id }}</span>
+                  <span class="dropdown-option-name">{{ p.name }}</span>
+                </button>
+              </li>
+            }
+            @if (filteredOptions.length === 0) {
+              <li class="dropdown-empty">
+                Brak dopasowań
+              </li>
+            }
+          </ul>
         </div>
-        <ul class="dropdown-list">
-          <li *ngFor="let p of filteredOptions">
-            <button
-              (click)="selectOption(p)"
-              class="dropdown-option"
-            >
-              <span class="dropdown-option-id" [style.color]="accent">{{ p.id }}</span>
-              <span class="dropdown-option-name">{{ p.name }}</span>
-            </button>
-          </li>
-          <li *ngIf="filteredOptions.length === 0" class="dropdown-empty">
-            Brak dopasowań
-          </li>
-        </ul>
-      </div>
+      }
     </div>
-  `
+    `
 })
-export class TrizParameterDropdownComponent implements OnInit {
+export class TrizParameterDropdownComponent {
   readonly parameters = TRIZ_PARAMETERS;
 
   @Input() label!: string;
@@ -73,9 +83,7 @@ export class TrizParameterDropdownComponent implements OnInit {
 
   @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
 
-  constructor(private eRef: ElementRef) {}
-
-  ngOnInit() {}
+  private eRef = inject(ElementRef);
 
   get filteredOptions(): TrizParameter[] {
     return this.options.filter(

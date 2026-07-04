@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-score-input-box',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   styleUrls: ['./score-input-box.component.css'],
   template: `
     <div class="score-wrapper">
@@ -26,7 +26,7 @@ export class ScoreInputBoxComponent {
   @Input() value: number | null = null;
   @Output() valueChange = new EventEmitter<number | null>();
 
-  onValueChange(raw: any) {
+  onValueChange(raw: unknown) {
     if (raw === null || raw === '') {
       this.valueChange.emit(null);
       return;

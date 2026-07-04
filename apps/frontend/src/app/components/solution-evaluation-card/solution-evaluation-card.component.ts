@@ -18,56 +18,58 @@ import { INVENTIVE_PRINCIPLES, Solution } from '../../data/triz';
             {{ solution.id }}
           </span>
         </div>
-
-        <div *ngIf="solution" class="eval-content">
-          <div class="eval-main-info">
-            <div>
-              <h2 class="eval-title">{{ solution.title }}</h2>
-              <p class="eval-summary">{{ solution.summary }}</p>
-            </div>
-            <div class="eval-score-box">
-              <div class="eval-score-value">
-                {{ score | number:'1.1-1' }}
+    
+        @if (solution) {
+          <div class="eval-content">
+            <div class="eval-main-info">
+              <div>
+                <h2 class="eval-title">{{ solution.title }}</h2>
+                <p class="eval-summary">{{ solution.summary }}</p>
               </div>
-              <div class="eval-score-label">wynik ważony</div>
+              <div class="eval-score-box">
+                <div class="eval-score-value">
+                  {{ score | number:'1.1-1' }}
+                </div>
+                <div class="eval-score-label">wynik ważony</div>
+              </div>
+            </div>
+            <div>
+              <div class="eval-section-title">
+                Zastosowane zasady wynalazcze
+              </div>
+              <div class="eval-principles">
+                @for (pid of solution.principleIds; track pid) {
+                  <span class="eval-principle">
+                    {{ pid }} · {{ inventivePrinciples[pid] ?? 'Zasada' }}
+                  </span>
+                }
+              </div>
+            </div>
+            <div>
+              <div class="eval-section-title">
+                Uzasadnienie
+              </div>
+              <p class="eval-rationale">
+                {{ solution.rationale }}
+              </p>
             </div>
           </div>
-
-          <div>
-            <div class="eval-section-title">
-              Zastosowane zasady wynalazcze
-            </div>
-            <div class="eval-principles">
-              <span *ngFor="let pid of solution.principleIds" class="eval-principle">
-                {{ pid }} · {{ inventivePrinciples[pid] ?? 'Zasada' }}
-              </span>
-            </div>
-          </div>
-
-          <div>
-            <div class="eval-section-title">
-              Uzasadnienie
-            </div>
-            <p class="eval-rationale">
-              {{ solution.rationale }}
-            </p>
-          </div>
-        </div>
+        }
       </div>
-
+    
       <button
-        (click)="onReset.emit()"
+        (click)="resetForm.emit()"
         class="eval-btn-reset"
-      >
+        >
         Rozpocznij nową analizę
       </button>
     </div>
-  `
+    `
 })
 export class SolutionEvaluationCardComponent {
   readonly inventivePrinciples = INVENTIVE_PRINCIPLES as Record<number, string | undefined>;
 
   @Input() solution!: Solution;
-  @Input() score: number = 0;
-  @Output() onReset = new EventEmitter<void>();
+  @Input() score = 0;
+  @Output() resetForm = new EventEmitter<void>();
 }

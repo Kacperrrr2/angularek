@@ -31,7 +31,7 @@ export interface FormulationState {
           class="problem-textarea"
         ></textarea>
       </section>
-
+    
       <section>
         <h3 class="section-title">Parametry sprzeczności</h3>
         <p class="section-desc">
@@ -54,7 +54,7 @@ export interface FormulationState {
           ></app-triz-parameter-dropdown>
         </div>
       </section>
-
+    
       <section>
         <div class="criteria-header">
           <div>
@@ -66,35 +66,38 @@ export interface FormulationState {
           <span
             class="criteria-sum"
             [ngClass]="totalWeight === 100 ? 'criteria-sum--valid' : 'criteria-sum--invalid'"
-          >
+            >
             Σ {{ totalWeight }}%
           </span>
         </div>
         <div class="criteria-list">
-          <div
-            *ngFor="let c of state.criteria; trackBy: trackByCriterionId"
-            class="criteria-item"
-          >
-            <span class="criteria-label">{{ c.label }}</span>
-            <div class="criteria-input-group">
-              <input
-                type="number"
-                min="0"
-                max="100"
-                [ngModel]="c.weight"
-                (ngModelChange)="onWeightChange(c.id, $event)"
-                class="criteria-input"
-              />
-              <span class="criteria-percent">%</span>
+          @for (c of state.criteria; track trackByCriterionId($index, c)) {
+            <div
+              class="criteria-item"
+              >
+              <span class="criteria-label">{{ c.label }}</span>
+              <div class="criteria-input-group">
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  [ngModel]="c.weight"
+                  (ngModelChange)="onWeightChange(c.id, $event)"
+                  class="criteria-input"
+                  />
+                <span class="criteria-percent">%</span>
+              </div>
             </div>
-          </div>
+          }
         </div>
-        <p *ngIf="totalWeight !== 100" class="criteria-error">
-          Wagi kryteriów muszą sumować się do 100%.
-        </p>
+        @if (totalWeight !== 100) {
+          <p class="criteria-error">
+            Wagi kryteriów muszą sumować się do 100%.
+          </p>
+        }
       </section>
     </div>
-  `
+    `
 })
 export class ProblemFormulationComponent {
   @Input() state!: FormulationState;
@@ -116,7 +119,7 @@ export class ProblemFormulationComponent {
     this.stateChange.emit({ worsen });
   }
 
-  onWeightChange(id: string, weightStr: any) {
+  onWeightChange(id: string, weightStr: unknown) {
     const weight = Number(weightStr) || 0;
     const newCriteria = this.state.criteria.map((c) =>
       c.id === id ? { ...c, weight } : c
