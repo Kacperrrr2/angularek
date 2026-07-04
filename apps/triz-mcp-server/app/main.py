@@ -32,6 +32,11 @@ mcp = FastMCP(
     lifespan=lifespan,
     stateless_http=True,
     json_response=True,
+    # FastMCP auto-enables DNS-rebinding protection (rejecting non-localhost Host
+    # headers with 421) when it thinks it's bound to localhost. Tell it the real
+    # bind host so that logic reflects reality (e.g. 0.0.0.0 in Docker, reachable
+    # by other containers via their own Host header).
+    host=config.MCP_HOST,
 )
 
 # ---------------------------------------------------------------------------
