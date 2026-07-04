@@ -1114,7 +1114,7 @@ cli = [
 ]
 
 [[package]]
-name = "mcp-server"
+name = "triz-mcp-server"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [

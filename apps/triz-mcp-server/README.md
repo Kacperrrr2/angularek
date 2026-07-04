@@ -5,7 +5,7 @@ A Model Context Protocol (MCP) server exposing [pytriz](https://github.com/mmysi
 ## Run with uv
 
 ```bash
-cp ../.env.example .env   # or create mcp-server/.env directly
+cp ../.env.example .env   # or create triz-mcp-server/.env directly
 uv sync
 uv run python app/main.py
 ```

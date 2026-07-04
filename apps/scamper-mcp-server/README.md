@@ -1,6 +1,6 @@
 # SCAMPER MCP Server
 
-A Model Context Protocol (MCP) server exposing tools for the [SCAMPER](https://en.wikipedia.org/wiki/SCAMPER) checklist over Streamable HTTP — a complementary problem-redefinition method to the TRIZ contradiction matrix in [`../mcp-server`](../mcp-server).
+A Model Context Protocol (MCP) server exposing tools for the [SCAMPER](https://en.wikipedia.org/wiki/SCAMPER) checklist over Streamable HTTP — a complementary problem-redefinition method to the TRIZ contradiction matrix in [`../triz-mcp-server`](../triz-mcp-server).
 
 SCAMPER reframes a problem by asking guiding questions across seven lenses:
 
