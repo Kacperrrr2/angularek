@@ -1,0 +1,28 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'ng-diagram/tokens.css';
+@import 'ng-diagram/primitives.css';
+@import 'ng-diagram/styles.css';
+
+:root {
+  /* Frontend-style CSS variables for ng-diagram edges and background */
+  --ngd-default-edge-stroke: hsl(240, 5.9%, 75%);
+  --ngd-default-edge-stroke-hover: hsl(240, 10%, 3.9%);
+  --ngd-default-edge-stroke-selected: hsl(240, 10%, 3.9%);
+  --ngd-default-edge-label-background-color: hsl(0, 0%, 100%);
+  --ngd-default-edge-label-color: hsl(240, 10%, 3.9%);
+  --ngd-default-edge-label-border-color: hsl(240, 5.9%, 90%);
+  
+  --ngd-diagram-background-color: hsl(0, 0%, 100%);
+  --ngd-background-line-minor-color: hsl(240, 5.9%, 96%);
+  --ngd-background-line-major-color: hsl(240, 5.9%, 90%);
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: hsl(0, 0%, 100%);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
