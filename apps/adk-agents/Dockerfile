@@ -14,6 +14,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 COPY pyproject.toml uv.lock ./
 COPY triz_agent/ /app/triz_agent/
+COPY scamper_agent/ /app/scamper_agent/
 
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked
@@ -21,4 +22,4 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 EXPOSE 8081
 
 # Dynamically resolve Cloud Run's injected PORT, falling back to 8081 locally
-CMD ["sh", "-c", "uv run adk api_server triz_agent --port ${PORT:-8081} --host 0.0.0.0"]
+CMD ["sh", "-c", "uv run adk api_server . --port ${PORT:-8081} --host 0.0.0.0"]
