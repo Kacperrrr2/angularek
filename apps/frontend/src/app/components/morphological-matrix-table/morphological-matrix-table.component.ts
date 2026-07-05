@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideChevronRight } from '@lucide/angular';
 import { ScoreInputBoxComponent } from '../score-input-box/score-input-box.component';
-import { INVENTIVE_PRINCIPLES, MOCK_SOLUTIONS } from '../../data/triz';
+import { INVENTIVE_PRINCIPLES, MOCK_SOLUTIONS, Solution } from '../../data/triz';
 
 @Component({
   selector: 'app-morphological-matrix-table',
@@ -18,7 +18,7 @@ import { INVENTIVE_PRINCIPLES, MOCK_SOLUTIONS } from '../../data/triz';
       </div>
     
       <ul class="matrix-list">
-        @for (s of mockSolutions; track s) {
+        @for (s of solutions; track s) {
           <li class="matrix-item">
             <div class="matrix-row">
               <span class="matrix-id">{{ s.id }}</span>
@@ -68,7 +68,7 @@ import { INVENTIVE_PRINCIPLES, MOCK_SOLUTIONS } from '../../data/triz';
     `
 })
 export class MorphologicalMatrixTableComponent {
-  readonly mockSolutions = MOCK_SOLUTIONS;
+  @Input() solutions: Solution[] = [];
   readonly inventivePrinciples = INVENTIVE_PRINCIPLES as Record<number, string | undefined>;
 
   @Input() scores: Record<string, number | null> = {};

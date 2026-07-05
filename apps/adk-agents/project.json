@@ -2,14 +2,14 @@
   "name": "adk-agent",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "sourceRoot": "apps/adk-agents/triz_agent",
+  "sourceRoot": "apps/adk-agents",
   "implicitDependencies": ["triz-mcp-server", "scamper-mcp-server"],
   "targets": {
     "serve": {
       "continuous": true,
       "executor": "nx:run-commands",
       "options": {
-        "command": "uv run adk api_server triz_agent --port 8081 --host 0.0.0.0",
+        "command": "uv run adk api_server . --port 8081 --host 0.0.0.0",
         "cwd": "apps/adk-agents"
       }
     },

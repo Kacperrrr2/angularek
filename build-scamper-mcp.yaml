@@ -1,0 +1,13 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-f', 'apps/scamper-mcp-server/Dockerfile',
+        '-t',
+        'europe-west1-docker.pkg.dev/przykladowy-projekt1234/buildwithai-repo/scamper-mcp-server:latest',
+        '.',
+      ]
+    env: ['DOCKER_BUILDKIT=1']
+images:
+  - 'europe-west1-docker.pkg.dev/przykladowy-projekt1234/buildwithai-repo/scamper-mcp-server:latest'
