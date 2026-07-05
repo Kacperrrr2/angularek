@@ -4,7 +4,7 @@ import { NavTabsRdComponent, StepDef } from './components/nav-tabs-rd/nav-tabs-r
 import { ProblemFormulationComponent, FormulationState } from './components/problem-formulation/problem-formulation.component';
 import { MorphologicalMatrixTableComponent } from './components/morphological-matrix-table/morphological-matrix-table.component';
 import { SolutionEvaluationCardComponent } from './components/solution-evaluation-card/solution-evaluation-card.component';
-import { DEFAULT_CRITERIA, MOCK_SOLUTIONS, Solution } from './data/triz';
+import { DEFAULT_CRITERIA, Solution } from './data/triz';
 import { SolveResult, SolveService } from './services/solve.service';
 import { LucideArrowLeft, LucideArrowRight } from '@lucide/angular';
 
@@ -29,16 +29,15 @@ const STEPS: StepDef[] = [
 })
 export class App {
   readonly STEPS = STEPS;
-  readonly MOCK_SOLUTIONS = MOCK_SOLUTIONS;
+
 
   step = 1;
   furthestUnlocked = 1;
   selectedId: string | null = null;
+  generatedSolutions: Solution[] = [];
 
   formulation: FormulationState = {
     problem: '',
-    improve: null,
-    worsen: null,
     criteria: JSON.parse(JSON.stringify(DEFAULT_CRITERIA)),
   };
 
@@ -57,22 +56,20 @@ export class App {
   get step1Valid(): boolean {
     return (
       this.formulation.problem.trim().length > 0 &&
-      this.formulation.improve !== null &&
-      this.formulation.worsen !== null &&
       this.weightSum === 100
     );
   }
 
   get scoredCount(): number {
-    return this.MOCK_SOLUTIONS.filter((s) => typeof this.scores[s.id] === 'number').length;
+    return Object.keys(this.scores).filter((k) => typeof this.scores[k] === 'number').length;
   }
 
   get step2Valid(): boolean {
-    return this.scoredCount === this.MOCK_SOLUTIONS.length;
+    return this.generatedSolutions.length > 0 && this.scoredCount === this.generatedSolutions.length;
   }
 
   get selectedSolution(): Solution | undefined {
-    return this.MOCK_SOLUTIONS.find((s) => s.id === this.selectedId);
+    return this.generatedSolutions.find((s) => s.id === this.selectedId);
   }
 
   onFormulationChange(patch: Partial<FormulationState>) {
@@ -101,6 +98,27 @@ export class App {
     this.solveService.solve(this.formulation.problem).subscribe({
       next: (result) => {
         this.solveResult.set(result);
+        
+        this.generatedSolutions = [];
+        result.triz.forEach((r, i) => {
+          this.generatedSolutions.push({
+            id: `TRIZ-${i + 1}`,
+            title: `TRIZ Koncepcja ${i + 1}`,
+            summary: 'Rozwiązanie oparte na zasadach TRIZ',
+            rationale: r.response,
+            principleIds: r.principles?.map(p => p.id) || []
+          });
+        });
+        result.scamper.forEach((r, i) => {
+          this.generatedSolutions.push({
+            id: `SCAMPER-${i + 1}`,
+            title: `SCAMPER Koncepcja ${i + 1}`,
+            summary: 'Rozwiązanie wygenerowane heurystyką SCAMPER',
+            rationale: r.response,
+            principleIds: []
+          });
+        });
+
         this.solving.set(false);
       },
       error: () => {
@@ -112,7 +130,7 @@ export class App {
 
   selectBest() {
     if (!this.step2Valid) return;
-    const best = [...this.MOCK_SOLUTIONS].sort(
+    const best = [...this.generatedSolutions].sort(
       (a, b) => (this.scores[b.id] ?? 0) - (this.scores[a.id] ?? 0)
     )[0];
     this.selectedId = best.id;
@@ -123,10 +141,9 @@ export class App {
     this.furthestUnlocked = 1;
     this.selectedId = null;
     this.scores = {};
+    this.generatedSolutions = [];
     this.formulation = {
       problem: '',
-      improve: null,
-      worsen: null,
       criteria: JSON.parse(JSON.stringify(DEFAULT_CRITERIA)),
     };
     this.solving.set(false);

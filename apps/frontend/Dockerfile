@@ -14,7 +14,8 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 COPY . .
+RUN chmod +x apps/frontend/entrypoint.sh
 
 EXPOSE 4200
 
-CMD ["npx", "nx", "serve", "frontend", "--host", "0.0.0.0", "--port", "4200"]
+CMD ["apps/frontend/entrypoint.sh"]

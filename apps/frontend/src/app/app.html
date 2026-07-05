@@ -37,12 +37,7 @@
             <div>
               <h2 class="app-step2-title">Przestrzeń rozwiązań</h2>
               <p class="app-step2-subtitle">
-                Sprzeczność
-                <span class="app-highlight-improve">{{ formulation.improve?.id }}</span>
-                ↑ /
-                <span class="app-highlight-worsen">{{ formulation.worsen?.id }}</span>
-                ↓ · {{ MOCK_SOLUTIONS.length }} wygenerowanych koncepcji. Oceń
-                każdą, aby wybrać najlepszą.
+                Wygenerowane rozwiązania AI dla Twojego problemu.
               </p>
             </div>
 
@@ -74,6 +69,7 @@
             }
 
             <app-morphological-matrix-table
+              [solutions]="generatedSolutions"
               [scores]="scores"
               (scoreChange)="onScoreChange($event)"
             ></app-morphological-matrix-table>
@@ -99,7 +95,7 @@
             {{ step1Valid ? 'Problem sformułowany' : 'Uzupełnij wymagane pola' }}
           }
           @if (step !== 1) {
-            {{ scoredCount }}/{{ MOCK_SOLUTIONS.length }} ocenionych
+            Wyniki AI
           }
         </span>
         @if (step === 1) {

@@ -22,7 +22,7 @@ export interface SolveResult {
 
 @Injectable({ providedIn: 'root' })
 export class SolveService {
-  private readonly baseUrl = 'http://localhost:3000/api';
+  private readonly baseUrl = `${(window as any).__env?.backendUrl || 'http://localhost:3000'}/api`;
   private readonly http = inject(HttpClient);
 
   solve(problemDescription: string) {
